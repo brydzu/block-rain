@@ -10,8 +10,12 @@
 	<title>Block Rain | Game</title>	
 	
 	<script src="strokeText.js"></script>
+	
+	<link rel="stylesheet" href="foundation.css" /> <!-- Zurb Foundation 5 -->
+    <link rel="stylesheet" href="foundation-icons.css" /> <!-- Foundation icons -->
+    <link rel="stylesheet" href="brand.css" /> <!-- Brand-related styling -->
     
-	<script>try{Typekit.load();}catch(e){}</script>
+    <script src="modernizr.js"></script>
 
 	<link rel="stylesheet" href="blockrain.css" type="text/css">
 
@@ -24,6 +28,7 @@
 
 <body>
 
+
   	<canvas id="board_canvas" width="82" height="187" style="position: fixed; left: 1000px; top: 30px; z-index: -100;">
 		Your browser does not support HTML5 Canvas.
 	</canvas>
@@ -35,19 +40,19 @@
 		<span id="score">3738</span>
 	</div>
 
-	<div id="instructions" style="position: relative; margin-left: 164px; top: 70px;">
-
+	<div id="instructions" style="position: relative; margin-left: 164px; top: 30px;">
 		<div id="controls" style="float: left;"> 
 			<input id="pauseButton" type="button" onclick="if (BLOCKRAIN.isPaused()) { BLOCKRAIN.unPause(); } else { BLOCKRAIN.setPause(); }" value="Pause" style="font-size: 125%"><br>
-			<input id="controlsButton" type="button" value="Controls" style="font-size: 125%"><br>
-			<input id="helpButton" type="button" value="Help" style="font-size: 125%"><br>
+			<!-- TODO --> <input id="controlsButton" type="button" value="Controls" style="font-size: 125%"><br>
+			<!-- TODO --> <input id="helpButton" type="button" value="Help" style="font-size: 125%"><br>
 		</div>
 	
 		<div id="instr" style="display: none;"></div>
 	</div>
 </div>
 
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="jquery.js"></script>
+    <script src="foundation.MIN.js"></script>
     
     <script>
       $(document).foundation();

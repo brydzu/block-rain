@@ -32,12 +32,12 @@ function random_perm_7(seed) {
   return function () {
     var i;
 	  
-	  for(i=6;i>0;i--) {
-	    var j = gen()%(i+1);
+	  for(i = 6; i > 0; i--) {
+	    var j = gen() % (i + 1);
 	    var tmp = arr[j];
 	    arr[j] = arr[i];
 	    arr[i] = tmp;
-	    // todo: change to xor swap
+	    // TODO: change to xor swap
     }
 	
 	return arr;
@@ -60,8 +60,8 @@ function random_perm_single(seed) {
 
 var board = [];
 
-var i=0;
-for (i=0;i<240;i++) {
+var i = 0;
+for (i = 0; i < 240; i++) {
 	board[i] = 0;
 }
 
@@ -80,16 +80,18 @@ var colors = ["#999","#ff3d73","#AEF055",
 
 function drawBox(position, value, context) {
   var i = position % 10;
-  var j = (position-i) / 10;
-  drawBox2(i,j,value,context);
+  var j = (position - i) / 10;
+  drawBox2(i, j, value, context);
 }
 
-function drawBox2(posX,posY,value,context) {
+function drawBox2(posX, posY, value, context) {
   context.fillStyle = colors[value];
-  context.fillRect(xoff + posX*(xsize+gapsize), yoff+posY*(ysize+gapsize),xsize,ysize);
+  
+  context.fillRect(xoff + posX * (xsize + gapsize), yoff + posY *
+    (ysize + gapsize), xsize, ysize);
 }
 
-function drawSingleBlock(x,y,context) {
+function drawSingleBlock(x, y, context) {
   context.fillRect(x,y,xsize,ysize);
 }
 
@@ -97,49 +99,69 @@ function drawBoard(boardArr, context) {
   var i;
   
   context.fillStyle = "#2c2c2a";
-  context.fillRect(0,0,xoff*2 + xsize*10 + gapsize*9,yoff*2+ysize*24+gapsize*23);
-  context.clearRect(xoff-bordersize,yoff-bordersize,(xsize+gapsize)*10-gapsize+bordersize*2,(ysize+gapsize)*24-gapsize+bordersize*2);
-  context.strokeRect(xoff-.5,yoff-.5,(xsize+gapsize)*10-gapsize+1,(ysize+gapsize)*24-gapsize+1);
-  context.fillStyle = "#888";
-  context.fillRect(xoff,yoff,(xsize+gapsize)*10-gapsize,(ysize+gapsize)*24-gapsize);
   
-  for(i=0;i<240;i++){
-    drawBox(i,board[i],context);
+  context.fillRect(0, 0, xoff * 2 + xsize * 10 + gapsize * 9, yoff * 2 +
+    ysize * 24 + gapsize * 23);
+  
+  context.clearRect(xoff - bordersize, yoff - bordersize, (xsize + gapsize)
+    * 10 - gapsize + bordersize * 2, (ysize + gapsize) * 24 - gapsize +
+    bordersize*2);
+  
+  context.strokeRect(xoff - .5, yoff - .5, (xsize + gapsize) * 10 - gapsize
+    + 1, (ysize + gapsize) * 24 - gapsize + 1);
+  
+  context.fillStyle = "#888";
+  
+  context.fillRect(xoff, yoff, (xsize + gapsize) * 10 - gapsize, (ysize +
+    gapsize) * 24 - gapsize);
+  
+  for(i = 0; i < 240; i++){
+    drawBox(i, board[i], context);
   }
 }
 
 var positionFromLeft = 0;
 
 function updateSizing() {
-  xsize = ysize = Math.floor((window.innerHeight - 75 - yoff*2 - 24*gapsize) / 24.0);
+  xsize = ysize = Math.floor((window.innerHeight - 75 - yoff * 2 - 24 *
+    gapsize) / 24.0);
 
   var bc = document.getElementById('board_canvas');
   var ac = document.getElementById('animated_canvas');
   var sc = document.getElementById('shadow_canvas');
 
   var score_el = document.getElementById('score').parentNode;
-  bc.width = ac.width = sc.width = (xoff*2 + xsize*10 + gapsize*9);
-  bc.height = ac.height = sc.height = (yoff*2 + ysize*24 + gapsize*23);
+  bc.width = ac.width = sc.width = (xoff * 2 + xsize * 10 + gapsize * 9);
+  bc.height = ac.height = sc.height = (yoff * 2 + ysize * 24 + gapsize * 23);
   
   
-	document.getElementById('instructions').style.marginLeft = (bc.width)+"px";
-	document.getElementById('pauseButton').style.marginLeft = (positionFromLeft-13)+"px";
-	document.getElementById('controlsButton').style.marginLeft = (positionFromLeft-13)+"px";
-	document.getElementById('helpButton').style.marginLeft = (positionFromLeft-13)+"px";
+	document.getElementById('instructions').style.marginLeft = (bc.width) + "px";
+	
+	document.getElementById('pauseButton').style.marginLeft =
+	  (positionFromLeft - 13) + "px";
+	
+	document.getElementById('controlsButton').style.marginLeft =
+	  (positionFromLeft - 13) + "px";
+	
+	document.getElementById('helpButton').style.marginLeft =
+	  (positionFromLeft - 13) + "px";
 	
 	document.getElementById('instr').ontouchmove = function (e) { // Prevent touchmove default scroll behavior on all but the instr text section
 		e.stopPropagation(); 
   };
 
   // Set the absolute positioning in the center of the window.
-  // note -- window.innerWidth/Height not supported by IE
-  // That 20 value before the / 2.0 will move left (if increased)
-  positionFromLeft = Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 80) / 2.0);
+  var leftness = 80;
+  positionFromLeft = Math.floor((window.innerWidth - (xoff * 2 + xsize * 
+    10 + gapsize * 9) - leftness) / 2.0);
+  
+  
   bc.style.left = ac.style.left = sc.style.left = positionFromLeft + "px"; 
   
-  score_el.style.left = positionFromLeft + bc.width + 9 + "px";
+  score_el.style.left = positionFromLeft + bc.width + 15 + "px";
 
-	document.getElementById('instructions').style.top = score_el.clientHeight + "px";
+	document.getElementById('instructions').style.top =
+	  score_el.clientHeight + 50 + "px";
   
   var ctx1 = document.getElementById('board_canvas').getContext('2d');
   drawBoard(board,ctx1);
@@ -154,19 +176,19 @@ function clearRowCheck(startrow, numrowsdown) {
   var i;
   var numRowsCleared = 0;
   
-  for (i=0;i<numrowsdown;i++) {
+  for (i = 0; i < numrowsdown; i++) {
     var j;
 	  var full = true;
 	  
 	  for (j=0;j<10;j++) {
-	    if (!board[(startrow+i)*10+j]) full = false;
+	    if (!board[(startrow + i) * 10 + j]) full = false;
 	  }
 	
 	  if (full) { 
 	    numRowsCleared++; 
-	    shiftDown(startrow+i);
+	    shiftDown(startrow + i);
 	    var ctx1 = document.getElementById('board_canvas').getContext('2d');
-	    drawBoard(board,ctx1);}
+	    drawBoard(board, ctx1);}
     }
     
     if (numRowsCleared == 1) { applyScore(100); }
@@ -179,12 +201,12 @@ function clearRowCheck(startrow, numrowsdown) {
 function shiftDown(row) {
   var i;
   
-  for(i=row*10-1;i>=0;i--) {
-    board[i+10] = board[i];
+  for(i = row * 10 - 1; i >= 0; i--) {
+    board[i + 10] = board[i];
   }
   
-  for(i=0;i<10;i++) {
-   board[i]=0;
+  for(i = 0; i < 10; i++) {
+   board[i] = 0;
   }
 }
 
@@ -199,8 +221,8 @@ function moveDownIntervalFunc() {
 
 function animationUpdateIntervalFunc() {
     // Move animPositions closer to their targets (piece positions)
-    animPositionX += (pieceX - animPositionX)*.3;
-    animPositionY += (pieceY - animPositionY)*.3;
+    animPositionX += (pieceX - animPositionX) * .3;
+    animPositionY += (pieceY - animPositionY) * .3;
 	// Move animRotation closer to zero
 	animRotation -= animRotation * 0.3;
     updatePiece();
@@ -212,13 +234,15 @@ var isMouseControl = false;
 var mouseControlX = 0; // Draw helper arrow
 
 function toggleMouseControl () {
-  if (isMouseControl) { mouseControlFunc = function () {}; document.oncontextmenu = null; } 
+  if (isMouseControl) { mouseControlFunc = function () {};
+    document.oncontextmenu = null; } 
+  
   else {mouseControlFunc = function () {
 
-      mouseControlX = (posx / window.innerWidth)*11.5-2.5;
+      mouseControlX = (posx / window.innerWidth) * 11.5 - 2.5;
 
-	  if (pieceX > mouseControlX+.5) moves[0](); 
-	  if (pieceX < mouseControlX-.5) moves[2]();
+	  if (pieceX > mouseControlX + .5) moves[0](); 
+	  if (pieceX < mouseControlX - .5) moves[2]();
 	  
   };
   document.oncontextmenu = function () { return false; };  
@@ -256,8 +280,8 @@ var setPause = function(isendgame) {
   document.title = "Block Rain | Game Over";
   
   if (!isendgame) {
-    drawPaused(); document.title="Block Rain | Paused";
-    document.getElementById("pauseButton").value="Resume";
+    drawPaused(); document.title = "Block Rain | Paused";
+    document.getElementById("pauseButton").value = "Resume";
   }
   
   paused = true;
@@ -304,7 +328,10 @@ function hardDropTest(x,y) {
 		if (now - lastFixTime > hardDropGestureTime) {
 			for (var i = hardDropYAccAtPreviousTimes.length-1; i >= 0; --i) {
 				if ((now - hardDropYAccAtPreviousTimes[i][1]) < hardDropGestureTime) {
-					if ((y - hardDropYAccAtPreviousTimes[i][0]) > hardDropYDistanceThreshold) {
+					
+					if ((y - hardDropYAccAtPreviousTimes[i][0]) > 
+					  hardDropYDistanceThreshold) {
+						
 						moves[6]();
 						return;
 					} 
@@ -323,18 +350,26 @@ function Control(newpos) {
 	if (paused) return;
 
 	var cl = control_location;
-	var delta = [newpos[0]-cl[0],newpos[1]-cl[1]];
-	control_accum = [control_accum[0]+delta[0],control_accum[1]+delta[1]];
+	var delta = [newpos[0] - cl[0], newpos[1] - cl[1]];
+	control_accum = [control_accum[0] + delta[0],control_accum[1] + delta[1]];
 
 	var thresh_sq = 50; // Square of pixels travel which is to cancel tap
-	if (touchlist.length == 1 && control_accum[0]*control_accum[0]+control_accum[1]*control_accum[1] > thresh_sq) {
+	
+	if (touchlist.length == 1 && control_accum[0] * control_accum[0] +
+	  control_accum[1] * control_accum[1] > thresh_sq) {
+		
 		lastTouchStartTime = 0; // Cancel tap gesture
 	}
+	
 	// Game control logic 
-	while (control_accum[0] > xMoveThreshold) { control_accum[0] -= xMoveThreshold; moves[2](); hardDropYAccAtPreviousTimes = []; }
-	while (control_accum[0] <-xMoveThreshold) { control_accum[0] += xMoveThreshold; moves[0](); hardDropYAccAtPreviousTimes = []; }
+	while (control_accum[0] > xMoveThreshold) { control_accum[0] -= 
+	  xMoveThreshold; moves[2](); hardDropYAccAtPreviousTimes = []; }
+	
+	while (control_accum[0] <-xMoveThreshold) { control_accum[0] +=
+	  xMoveThreshold; moves[0](); hardDropYAccAtPreviousTimes = []; }
 
-	while (control_accum[1] > yMoveThreshold) { control_accum[1] -= yMoveThreshold; moves[3](); }
+	while (control_accum[1] > yMoveThreshold) { control_accum[1] -=
+	  yMoveThreshold; moves[3](); }
 	
 	hardDropYAccAtPreviousTimes.push([newpos[1], new Date().getTime()]);
 
@@ -344,7 +379,6 @@ function Control(newpos) {
 
 var actually_draw_touches = false;
 
-
 function drawTouches() {
 
 	if (!actually_draw_touches) return;
@@ -353,9 +387,14 @@ function drawTouches() {
 
 		// Removes any DOM indicator which is no longer in touchlist
 	for (var i = 0; i < indicator_container.childNodes.length; i++) {
+		
 		var found = false;
-		for (var j=0;j<touchlist.length;++j) {
-			if (touchlist[j].identifier == indicator_container.childNodes[i].innerHTML.replace(/^(.*)@.*$/,'$1')) {
+		
+		for (var j = 0; j < touchlist.length; ++j) {
+			
+			if (touchlist[j].identifier ==
+			  indicator_container.childNodes[i].innerHTML.replace(/^(.*)@.*$/,'$1')) {
+				
 				found = true;
 			}
 		}
@@ -365,15 +404,23 @@ function drawTouches() {
 	}
 
 	// Updates remaining DOM indicators with updated positioning
-	for (var i=0; i < touchlist.length; ++i) { 
+	for (var i = 0; i < touchlist.length; ++i) { 
+		
 		var found = false;
-		for (var j=0;j<indicator_container.childNodes.length;j++) {
+		
+		for (var j = 0; j < indicator_container.childNodes.length; j++) {
+			
 			var thisf = indicator_container.childNodes[j];
 
 			if (thisf.innerHTML.replace(/^(.*)@.*$/,'$1') == touchlist[i].identifier) {
-				thisf.style.webkitTransform = 'translate('+touchlist[i].clientX+'px, '+touchlist[i].clientY+'px)';
-				thisf.innerHTML = touchlist[i].identifier + "@ " + touchlist[i].clientX +", "+ touchlist[i].clientY;
+				thisf.style.webkitTransform = 'translate(' + touchlist[i].clientX + 
+				  'px, ' + touchlist[i].clientY + 'px)';
+				
+				thisf.innerHTML = touchlist[i].identifier + "@ " +
+				  touchlist[i].clientX +", "+ touchlist[i].clientY;
+				
 				found = true;
+				
 				if (touchlist[i].identifier == control_finger_id) {
 					thisf.setAttribute('class', 'finger-indicator control');
 				}
@@ -383,12 +430,19 @@ function drawTouches() {
 		// Creates new DOM indicators if there are new fingers
 		if (!found) {
 			var new_indicator = document.createElement('span'); 
-			new_indicator.innerHTML = touchlist[i].identifier + "@ " + touchlist[i].clientX +", "+ touchlist[i].clientY;
-			new_indicator.style.webkitTransform = 'translate('+touchlist[i].clientX+'px, '+touchlist[i].clientY+'px)';
+			
+			new_indicator.innerHTML = touchlist[i].identifier + "@ " + 
+			  touchlist[i].clientX +", "+ touchlist[i].clientY;
+			
+			new_indicator.style.webkitTransform = 
+			  'translate('+touchlist[i].clientX+'px, '+touchlist[i].clientY+'px)';
+			
 			new_indicator.setAttribute('class','finger-indicator');
+			
 			if (touchlist[i].identifier == control_finger_id) {
 				new_indicator.setAttribute('class', 'finger-indicator control');
 			}
+			
 			indicator_container.appendChild(new_indicator);
 		}
 	}
@@ -411,37 +465,55 @@ function win_onload() {
   }
 	
   // Needed to make the range settable 
-  document.getElementById('sens_range').ontouchmove = function (e) { e.stopPropagation(); }
+  document.getElementById('sens_range').ontouchmove = function (e) { 
+    e.stopPropagation(); }
+  
   updateSizing();  
 }
 
-var tetromino_Z = [[[1,1],[0,1,1]],[[0,0,1],[0,1,1],[0,1]],[[],[1,1],[0,1,1]],[[0,1],[1,1],[1]]];
-var tetromino_S = [[[0,2,2],[2,2]],[[0,2],[0,2,2],[0,0,2]],[[],[0,2,2],[2,2]],[[2],[2,2],[0,2]]];
-var tetromino_J = [[[3],[3,3,3]],[[0,3,3],[0,3],[0,3]],[[],[3,3,3],[0,0,3]],[[0,3],[0,3],[3,3]]];
-var tetromino_T = [[[0,4],[4,4,4]],[[0,4],[0,4,4],[0,4]],[[],[4,4,4],[0,4]],[[0,4],[4,4],[0,4]]];
-var tetromino_O = [[[5,5],[5,5]]];
-var tetromino_L = [[[0,0,6],[6,6,6]],[[0,6],[0,6],[0,6,6]],[[],[6,6,6],[6]],[[6,6],[0,6],[0,6]]];
-var tetromino_I = [[[],[7,7,7,7]],[[0,0,7],[0,0,7],[0,0,7],[0,0,7]],[[],[],[7,7,7,7]],[[0,7],[0,7],[0,7],[0,7]]];
-// Tetromino geometry data
-var tetrominos = [tetromino_Z,tetromino_S,tetromino_J,tetromino_T,tetromino_O,tetromino_L,tetromino_I];
-// This is for the rotation animation
-var tet_center_rot = [[1,1,true],[1,1,true],[1,1,true],[1,1,true],[0,0,false],[1,1,true],[1,1,false]];
+var tetromino_Z = [[[1,1],[0,1,1]],[[0,0,1],[0,1,1],[0,1]],[[],[1,1],[0,1,1]],
+  [[0,1],[1,1],[1]]];
 
-var pieceX=3;
-var pieceY=0;
-var curPiece=0;
-var curRotation=0;
+var tetromino_S = [[[0,2,2],[2,2]],[[0,2],[0,2,2],[0,0,2]],[[],[0,2,2],[2,2]],
+  [[2],[2,2],[0,2]]];
+
+var tetromino_J = [[[3],[3,3,3]],[[0,3,3],[0,3],[0,3]],[[],[3,3,3],[0,0,3]],
+  [[0,3],[0,3],[3,3]]];
+
+var tetromino_T = [[[0,4],[4,4,4]],[[0,4],[0,4,4],[0,4]],[[],[4,4,4],[0,4]],
+  [[0,4],[4,4],[0,4]]];
+
+var tetromino_O = [[[5,5],[5,5]]];
+
+var tetromino_L = [[[0,0,6],[6,6,6]],[[0,6],[0,6],[0,6,6]],[[],[6,6,6],[6]],
+  [[6,6],[0,6],[0,6]]];
+
+var tetromino_I = [[[],[7,7,7,7]],[[0,0,7],[0,0,7],[0,0,7],[0,0,7]],[[],[],
+  [7,7,7,7]],[[0,7],[0,7],[0,7],[0,7]]];
+
+// Tetromino geometry data
+var tetrominos = [tetromino_Z,tetromino_S,tetromino_J,tetromino_T,tetromino_O,
+  tetromino_L,tetromino_I];
+
+// This is for the rotation animation
+var tet_center_rot = [[1,1,true],[1,1,true],[1,1,true],[1,1,true],[0,0,false],
+  [1,1,true],[1,1,false]];
+
+var pieceX = 3;
+var pieceY = 0;
+var curPiece = 0;
+var curRotation = 0;
 
 
 function drawMessage(messageString, size) {
   var ctx = document.getElementById("animated_canvas").getContext('2d');
   var offset = xoff;
-  var size = (xsize +gapsize*.9)*size;
-  var yoffset = yoff + (xsize+gapsize)*10;
+  var size = (xsize + gapsize * .9) * size;
+  var yoffset = yoff + (xsize + gapsize) * 10;
   ctx.strokeStyle = "#FFF";
-  ctx.strokeText(messageString,offset,yoffset,size,160);
+  ctx.strokeText(messageString, offset, yoffset, size, 160);
   ctx.strokeStyle = "#000";
-  ctx.strokeText(messageString,offset,yoffset,size,100);
+  ctx.strokeText(messageString, offset, yoffset, size, 100);
 }
 
 function clearContext(ctx, width, height) {
@@ -458,9 +530,9 @@ function clearContext(ctx, width, height) {
 
 function gameWin() {
   var sc = document.getElementById('shadow_canvas');
-  clearContext(sc.getContext('2d'),sc.width,sc.height);
+  clearContext(sc.getContext('2d'), sc.width, sc.height);
   var ac = document.getElementById('animated_canvas');
-  clearContext(ac.getContext('2d'),ac.width,ac.height);
+  clearContext(ac.getContext('2d'), ac.width, ac.height);
   drawMessage("You Win!", 1.45);
   setPause(true);
 }
@@ -494,15 +566,15 @@ function fixPiece() {
 	lastFixTime = new Date().getTime();
   var i,j;
   var tetk = tetrominos[curPiece][curRotation];
-  for (j=0;j<tetk.length;j++) {
+  for (j = 0; j < tetk.length; j++) {
 	var tetkj = tetk[j];
-	for (i=0;i<tetkj.length;i++) {
+	for (i = 0; i < tetkj.length; i++) {
 	  var tetkji = tetkj[i];
-	  var pxi = pieceX+i;
-	  var pyj = pieceY+j;
+	  var pxi = pieceX + i;
+	  var pyj = pieceY + j;
 	  if (tetkji)
 	  {
-	    board[pyj*10+pxi] = tetkji;
+	    board[pyj * 10 + pxi] = tetkji;
 	  }
 	}
   }
@@ -515,16 +587,16 @@ function fixPiece() {
 function isPieceInside() {
   var i,j;
   var tetk = tetrominos[curPiece][curRotation];
-  for (j=0;j<tetk.length;j++) {
+  for (j = 0; j < tetk.length; j++) {
 	var tetkj = tetk[j];
-	for (i=0;i<tetkj.length;i++) {
+	for (i = 0; i < tetkj.length; i++) {
 	  var tetkji = tetkj[i];
-	  var pxi = pieceX+i;
-	  var pyj = pieceY+j;
+	  var pxi = pieceX + i;
+	  var pyj = pieceY + j;
 	  if (tetkji && (pxi < 0 || pyj < 0 || pxi > 9 || pyj > 23)) {
 	    return 1;
 	  }
-	  if (tetkji && board[pyj*10+pxi]) {
+	  if (tetkji && board[pyj * 10 + pxi]) {
 	    return 2; 
 	  }
 	}
@@ -533,11 +605,18 @@ function isPieceInside() {
 }
 moves = [
   // Left
-  function () {if (freezeInteraction) return; pieceX -= 1; if (isPieceInside()) pieceX += 1; shiftright = 0; updateShadow(); clearLockTimer();},
+  function () {if (freezeInteraction) return; pieceX -= 1;
+    if (isPieceInside()) pieceX += 1; shiftright = 0; updateShadow();
+    clearLockTimer();},
+  
   // Up -- is a cheat in standard tetris
-  function () {if (freezeInteraction) return; pieceY -= 1; if (isPieceInside()) pieceY += 1; clearLockTimer();},
+  function () {if (freezeInteraction) return; pieceY -= 1;
+    if (isPieceInside()) pieceY += 1; clearLockTimer();},
+  
   // Right
-  function () {if (freezeInteraction) return; pieceX += 1; if (isPieceInside()) pieceX -= 1; shiftright = 1; updateShadow(); clearLockTimer();},
+  function () {if (freezeInteraction) return; pieceX += 1;
+    if (isPieceInside()) pieceX -= 1; shiftright = 1; updateShadow(); clearLockTimer();},
+  
   // Down -- moves stuff down, if at bottom, locks it
   function () {
     if (freezeInteraction) return;
@@ -551,9 +630,9 @@ moves = [
   function () {
     if (freezeInteraction) return;
     var oldrot = curRotation; 
-    curRotation = (curRotation+1)%(tetrominos[curPiece].length);
+    curRotation = (curRotation + 1) % (tetrominos[curPiece].length);
 	if (kick()) curRotation = oldrot; 
-	else animRotation = -Math.PI/2.0;
+	else animRotation = -Math.PI / 2.0;
 	updateShadow();
 	clearLockTimer();
   },
@@ -562,9 +641,9 @@ moves = [
     if (freezeInteraction) return;
     var oldrot = curRotation;
 	var len = tetrominos[curPiece].length;
-	curRotation = (curRotation-1+len)%len;
+	curRotation = (curRotation - 1 + len) % len;
 	if (kick()) curRotation = oldrot;
-	else animRotation = Math.PI/2.0;
+	else animRotation = Math.PI / 2.0;
 	updateShadow();
 	clearLockTimer();
   },
@@ -590,7 +669,7 @@ moves = [
     if (isPieceInside()) { 
 	  pieceY -= 1; 
 	  if (lockTimer == "") {
-	    lockTimer = setTimeout(function(){moves[3]();},600);
+	    lockTimer = setTimeout(function(){moves[3]();}, 600);
 	  }
 	}
   },
@@ -618,7 +697,9 @@ var hardDropTimeout = "";
 function dropPiece () {
   if (hardDropTimeout != "") return; 
   freezeInteraction = true;
-  hardDropTimeout = setTimeout(function () {freezeInteraction = false; fixPiece(); clearLockTimer(); hardDropTimeout = "";},100);
+  
+  hardDropTimeout = setTimeout(function () {freezeInteraction = false;
+    fixPiece(); clearLockTimer(); hardDropTimeout = "";}, 100);
 }
 
 // Left, right
@@ -686,8 +767,9 @@ function stopRepeat(i) {
 
 var buttonList = [[37,74],[],[39,76],[40,75],[38,73,88,82],[90,84],
   [68,32],[],[67],[77],[78]];
+
 var buttonStates = new Array(buttonList.length);
-for (i=0; i<buttonList.length; ++i) { buttonStates[i] = 0; }
+for (i = 0; i < buttonList.length; ++i) { buttonStates[i] = 0; }
 
 function keydownfunc(e) {   
   var keynum;
@@ -703,9 +785,9 @@ function keydownfunc(e) {
   if (paused) return;
   
   var i;
-  for (i=0;i<buttonList.length;i++) {
+  for (i = 0; i < buttonList.length; i++) {
     var j;
-    for (j=0;j<buttonList[i].length;j++) {
+    for (j = 0; j < buttonList[i].length; j++) {
 	  if (keynum == buttonList[i][j] && !buttonStates[i]){
 	    moves[i]();
 		stopRepeat(i); // Insurance
@@ -727,7 +809,7 @@ function keyupfunc(e) {
   if (paused) return;
   
   var i;
-  for (i=0;i<buttonList.length;i++) {
+  for (i = 0; i < buttonList.length; i++) {
     var j;
     for (j=0;j<buttonList[i].length;j++) {
 	  if (keynum == buttonList[i][j]) {
@@ -739,9 +821,9 @@ function keyupfunc(e) {
   
 }
 
-var animPositionX=3;
-var animPositionY=0;
-var animRotation=0;
+var animPositionX = 3;
+var animPositionY = 0;
+var animRotation = 0;
 
 var drawIndicators = false;
 function drawPiece(context) {
@@ -750,40 +832,50 @@ function drawPiece(context) {
   var tetk = tetrominos[curPiece][curRotation];
   // Translating (canvas origin) to the center, 
   // rotating there, then drawing the boxes
-  context.clearRect(0,0,xoff*2 + xsize*10 + gapsize*9,yoff*2+ysize*24+gapsize*23);  
+  context.clearRect(0, 0, xoff * 2 + xsize * 10 + gapsize * 9, yoff * 2 +
+    ysize * 24 + gapsize * 23);  
+  
   if (isMouseControl && drawIndicators) {
     context.save();
-    context.translate(xoff + (xsize+gapsize) * (mouseControlX+1.5),yoff);
+    context.translate(xoff + (xsize + gapsize) * (mouseControlX + 1.5), yoff);
 	
-	context.fillStyle = "rgba(0,0,255,"+(Math.abs((mouseControlX) - Math.floor(mouseControlX+0.5)) * 0.2 + 0.2)+")";
-	context.fillRect(-xsize/4,0,xsize/2,ysize*24 + gapsize*23);
+	context.fillStyle = "rgba(0,0,255," + (Math.abs((mouseControlX) -
+	  Math.floor(mouseControlX + 0.5)) * 0.2 + 0.2) + ")";
+	
+	context.fillRect(-xsize / 4, 0, xsize / 2, ysize * 24 + gapsize * 23);
 	context.restore();
   }
   context.save();
   context.fillStyle = colors[curPiece+1];
-  var centerX = tet_center_rot[curPiece][0]*(xsize+gapsize)+xsize/2+(!tet_center_rot[curPiece][2])*(xsize/2+gapsize);
-  var centerY = tet_center_rot[curPiece][1]*(ysize+gapsize)+ysize/2+(!tet_center_rot[curPiece][2])*(ysize/2+gapsize);
   
-  context.translate(xoff + animPositionX*(xsize+gapsize) + centerX,yoff + animPositionY*(ysize+gapsize) + centerY);
+  var centerX = tet_center_rot[curPiece][0] * (xsize + gapsize) + xsize / 2 + 
+    (!tet_center_rot[curPiece][2]) * (xsize / 2 + gapsize);
+  
+  var centerY = tet_center_rot[curPiece][1] * (ysize + gapsize) + ysize / 2 +
+    (!tet_center_rot[curPiece][2]) * (ysize / 2 + gapsize);
+  
+  context.translate(xoff + animPositionX * (xsize + gapsize) + centerX, yoff + 
+    animPositionY * (ysize + gapsize) + centerY);
+  
   context.rotate(animRotation);
-  context.translate(-centerX,-centerY); 
+  context.translate(-centerX, -centerY); 
   
   // Now in rotated coordinates, zeroed at piece origin
-  for (j=0;j<tetk.length;j++) {
+  for (j = 0; j < tetk.length; j++) {
 	var tetkj = tetk[j];
-	for (i=0;i<tetkj.length;i++) {
+	for (i = 0; i < tetkj.length; i++) {
 	  var tetkji = tetkj[i];
 	  if (tetkji) {
-		context.fillRect(i*(xsize+gapsize),j*(ysize+gapsize),xsize,ysize);
+		context.fillRect(i * (xsize + gapsize), j *(ysize + gapsize), xsize, ysize);
 	  }
 	}
   }
   context.restore();
   if (isMouseControl && drawIndicators) {
 	  context.save();
-	  context.translate(xoff+(animPositionX+1.5)*(xsize+gapsize),yoff);
+	  context.translate(xoff + (animPositionX + 1.5) * (xsize + gapsize), yoff);
 	  context.fillStyle = "rgba(255,0,0,0.3)";
-	  context.fillRect(-xsize/4,0,xsize/2,ysize*24+gapsize*23);
+	  context.fillRect(-xsize / 4, 0 , xsize / 2, ysize * 24 + gapsize * 23);
 	  context.restore();
   }
   
@@ -802,25 +894,27 @@ function drawShadow(context) {
   pieceY = origY; 
   shadowY = curY;
   if (!count) return;
-  drawShadowPieceAt(context,pieceX,curY);
+  drawShadowPieceAt(context, pieceX, curY);
 }
 
 function drawShadowPieceAt(context, gridX, gridY) {
   tetk = tetrominos[curPiece][curRotation];
   
-  context.clearRect(0, 0, xoff*2 + xsize*10 + gapsize*9, yoff*2 +
-    ysize*24 + gapsize*23);  
+  context.clearRect(0, 0, xoff * 2 + xsize * 10 + gapsize * 9, yoff * 2 +
+    ysize * 24 + gapsize * 23);  
   
   context.save();
   context.fillStyle = "#777";
-  context.translate(xoff+gridX*(xsize+gapsize),yoff+gridY*(ysize+gapsize));
+  context.translate(xoff + gridX * (xsize + gapsize), yoff + gridY * (ysize + 
+    gapsize));
   
   for (j = 0; j < tetk.length; j++) {
     var tetkj = tetk[j];
     for (i = 0; i < tetkj.length; i++) {
       var tetkji = tetkj[i];
       if (tetkji) {
-        context.fillRect(i*(xsize+gapsize),j*(ysize+gapsize),xsize,ysize);
+        context.fillRect(i * (xsize + gapsize), j * (ysize + gapsize), xsize,
+          ysize);
       }
     }
   }
@@ -828,8 +922,8 @@ function drawShadowPieceAt(context, gridX, gridY) {
   context.restore();
 }
 
-var posx=0;
-var posy=0;
+var posx = 0;
+var posy = 0;
 function mousemovefunc(e) {
 	if (!e) var e = window.event;
 	if (e.pageX || e.pageY) 	{
@@ -935,9 +1029,9 @@ function doc_ots(e) {
 	if (e.touches.length == 1) { // set this finger as control
 		control_finger_id = e.touches[0].identifier;
 		// Initialize control_location 
-		control_location = [e.touches[0].clientX,e.touches[0].clientY];
+		control_location = [e.touches[0].clientX, e.touches[0].clientY];
 		// Initialize control_accum
-		control_accum = [0,0];
+		control_accum = [0, 0];
 	}
 
 	if (e.changedTouches.length == 1) {
@@ -981,19 +1075,19 @@ function flatten(obj, levels) {
 	if (obj instanceof Array) {
 		str = '[';
 		empty = true;
-		for (var i=0;i<obj.length;i++) {
+		for (var i = 0; i < obj.length; i++) {
 			empty = false;
-			str += flatten(obj[i],levels-1)+', ';
+			str += flatten(obj[i], levels - 1) + ', ';
 		}
-		return (empty?str:str.slice(0,-2))+']';
+		return (empty ? str : str.slice(0, -2)) + ']';
 	} else if (obj instanceof Object) {
 		str = '{'; 
 		empty = true;
 		for (i in obj) { 
 			empty = false;
-			str += i+'->'+flatten(obj[i],levels-1)+', '; 
+			str += i+'->'+flatten(obj[i],levels-1) + ', '; 
 		} 
-		return (empty?str:str.slice(0,-2))+'}';
+		return (empty ? str : str.slice(0, -2)) + '}';
 	} else {
 		return obj;
 	}
@@ -1023,6 +1117,7 @@ this.scoreChangeCallback = function (cb) { scoreCallback = cb; };
 
 }; // end
 
+/* TODO */
 /* START SECTION: PREVIEW GROUP */
 function PreviewGroup(baseX, baseY) {
   var i;
