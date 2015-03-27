@@ -3,7 +3,7 @@ Responsive Tetris clone.
 
 **Languages:** HTML, CSS, Javascript
 
-*Libraries:** jQuery, Modernizr, Zurb Foundation
+**Libraries:** jQuery, Modernizr, Zurb Foundation
 
 Port of placeholder game from [Ging Casino](http://gingcasino.com).
 
