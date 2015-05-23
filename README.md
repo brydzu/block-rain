@@ -1,5 +1,6 @@
 # Block Rain
 Responsive Tetris clone.
+
 [View/play this online under my Github Pages.](https://gingeleski.github.io/block-rain)
 
 **Languages:** HTML, CSS, Javascript
